@@ -61,6 +61,7 @@
 
       <section>
         <h2 class="section__title">Bidness Directory</h2>
+        <p id="statusMessage" class="status-message" hidden></p>
         <div id="businessList" class="businesses" role="list"></div>
         <p id="emptyState" class="empty-state" hidden>
           No bidnesses in the directory yet. Add one to get started.
@@ -72,6 +73,13 @@
       <p>&copy; <span id="copyrightYear"></span> Bidness Directory. All rights reserved.</p>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      window.supabaseConfig = {
+        url: "https://your-project-id.supabase.co",
+        key: "your-public-anon-key",
+      };
+    </script>
     <script src="app.js"></script>
   </body>
 </html>
