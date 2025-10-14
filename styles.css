@@ -392,3 +392,68 @@ textarea:focus {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 }
+
+/* ============================================
+   THEME TOGGLE STYLING
+============================================ */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.15);
+  color: var(--color-text);
+  transition: background 200ms ease, transform 200ms ease, color 200ms ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(34, 211, 238, 0.2);
+  transform: translateY(-1px);
+}
+
+.theme-toggle .icon {
+  font-size: 1rem;
+  transition: transform 250ms ease;
+}
+
+.theme-toggle:hover .icon {
+  transform: rotate(20deg);
+}
+
+/* Smooth color transitions when switching themes */
+html {
+  transition: background-color 0.5s ease, color 0.5s ease,
+              border-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+body, .btn, .search, .form, .business, .badge {
+  transition: background 0.5s ease, color 0.5s ease, box-shadow 0.5s ease,
+              border-color 0.5s ease;
+}
+
+/* Light Theme (manual override) */
+html[data-theme="light"] {
+  --color-primary: #059669;
+  --color-primary-dark: #047857;
+  --color-accent: #0ea5e9;
+  --color-bg: #f8fafc;
+  --color-card-bg: #ffffff;
+  --color-text: #0f172a;
+  --color-muted: #64748b;
+  --color-border: rgba(15, 23, 42, 0.1);
+  --shadow-lg: 0 10px 25px -8px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+}
+
+/* Toggle icon change */
+html[data-theme="light"] .theme-toggle .icon {
+  content: "☀️";
+}
+
+html[data-theme="light"] .theme-toggle .label::after {
+  content: "Light Mode";
+}
+
