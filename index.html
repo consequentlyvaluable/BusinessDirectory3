@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bidness Directory</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__content">
+        <h1 class="hero__title">Bidness Directory</h1>
+        <p class="hero__subtitle">
+          Discover local favorites, hidden gems, and everything in between.
+        </p>
+        <button id="toggleFormButton" class="btn btn--primary">Add a Business</button>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="search">
+        <label for="searchInput" class="search__label">Search the directory</label>
+        <input
+          type="search"
+          id="searchInput"
+          class="search__input"
+          placeholder="Search by name, category, or location"
+          autocomplete="off"
+        />
+      </section>
+
+      <section id="formSection" class="form form--hidden" aria-hidden="true">
+        <h2 class="form__title">Add a new business</h2>
+        <form id="businessForm" novalidate>
+          <div class="form__grid">
+            <label class="form__field">
+              <span>Name</span>
+              <input type="text" name="name" required placeholder="Bidness Name" />
+            </label>
+            <label class="form__field">
+              <span>Category</span>
+              <input type="text" name="category" required placeholder="What do they do?" />
+            </label>
+            <label class="form__field">
+              <span>Location</span>
+              <input type="text" name="location" required placeholder="Where are they?" />
+            </label>
+            <label class="form__field form__field--full">
+              <span>Description</span>
+              <textarea
+                name="description"
+                rows="3"
+                placeholder="Tell folks why this bidness is special"
+              ></textarea>
+            </label>
+          </div>
+          <div class="form__actions">
+            <button type="submit" class="btn btn--primary">Save bidness</button>
+            <button type="button" id="cancelButton" class="btn btn--secondary">Cancel</button>
+          </div>
+        </form>
+      </section>
+
+      <section>
+        <h2 class="section__title">Bidness Directory</h2>
+        <div id="businessList" class="businesses" role="list"></div>
+        <p id="emptyState" class="empty-state" hidden>
+          No bidnesses in the directory yet. Add one to get started.
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; <span id="copyrightYear"></span> Bidness Directory. All rights reserved.</p>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
