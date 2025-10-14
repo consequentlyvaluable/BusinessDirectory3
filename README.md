@@ -37,7 +37,7 @@ A web-based business directory that allows users to search, filter, and manage l
    You can tighten this policy later to add rate limits or validation logic that matches your requirements.
 4. Update the `window.supabaseConfig` snippet in `index.html` with your project URL and anon key so the client can connect.
 
-=======
+
 ## License
 
 You’re free to use, modify, and distribute this code — as long as any changes or derivatives you share or host publicly are also released under the same open-source license.
