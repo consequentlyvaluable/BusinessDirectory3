@@ -37,10 +37,6 @@ A web-based business directory that allows users to search, filter, and manage l
    You can tighten this policy later to add rate limits or validation logic that matches your requirements.
 4. Update the `window.supabaseConfig` snippet in `index.html` with your project URL and anon key so the client can connect.
 
-## Troubleshooting
-
-- **"new row violates row-level security policy" when submitting the form** – The insert policy is missing or too restrictive. Ensure RLS is enabled and apply the sample policy above (or an equivalent one) that grants the `anon` role permission to insert into `public.businesses`. After updating policies, reload the page and try again.
-
 =======
 This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
 

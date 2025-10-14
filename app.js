@@ -172,18 +172,7 @@ const handleFormSubmit = async (event) => {
   submitButton.disabled = false;
 
   if (error) {
-    let message = `Unable to save business: ${error.message}`;
-
-    if (
-      typeof error.message === "string" &&
-      error.message.toLowerCase().includes("row-level security")
-    ) {
-      message +=
-        ". Check your Supabase Row Level Security policies to ensure the anon role can insert into the businesses table.";
-    }
-
-    console.error("Supabase insert failed", error);
-    setStatusMessage(message, {
+    setStatusMessage(`Unable to save business: ${error.message}`, {
       variant: "error",
     });
     return;
