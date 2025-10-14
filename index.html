@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,14 +8,21 @@
   </head>
   <body>
     <header class="hero">
-      <div class="hero__content">
-        <button id="theme-toggle" class="btn btn--secondary theme-toggle">
-  <span class="icon">🌙</span>
-  <span class="label">Dark Mode</span>
-</button>
+      <div class="hero__top">
+        <label class="theme-switch" for="theme-toggle">
+          <span class="theme-switch__sr">Toggle light mode</span>
+          <input type="checkbox" id="theme-toggle" aria-label="Toggle light mode" />
+          <span class="theme-switch__track" aria-hidden="true">
+            <span class="theme-switch__icon theme-switch__icon--sun">☀️</span>
+            <span class="theme-switch__thumb"></span>
+            <span class="theme-switch__icon theme-switch__icon--moon">🌙</span>
+          </span>
+        </label>
+      </div>
 
+      <div class="hero__content">
         <h1 class="hero__title">Shia Business Directory</h1>
-        
+
         <button id="toggleFormButton" class="btn btn--primary">Add a Business</button>
       </div>
     </header>

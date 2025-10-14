@@ -232,39 +232,29 @@ const init = async () => {
 // THEME TOGGLE LOGIC
 document.addEventListener("DOMContentLoaded", () => {
   const toggle = document.getElementById("theme-toggle");
-  if (!toggle) return; // Safety check if button isn't found
+  if (!toggle) return;
 
-  const icon = toggle.querySelector(".icon");
-  const label = toggle.querySelector(".label");
-
-  // Load saved preference or system default
-  const saved = localStorage.getItem("theme");
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const initialTheme = saved || (prefersDark ? "dark" : "light");
-
-  document.documentElement.setAttribute("data-theme", initialTheme);
-
-  // Update UI text/icon
-  const updateToggle = () => {
-    const theme = document.documentElement.getAttribute("data-theme");
-    if (theme === "light") {
-      icon.textContent = "☀️";
-      label.textContent = "Light Mode";
-    } else {
-      icon.textContent = "🌙";
-      label.textContent = "Dark Mode";
-    }
+  const applyTheme = (theme) => {
+    document.documentElement.setAttribute("data-theme", theme);
+    toggle.checked = theme === "light";
   };
 
-  updateToggle();
+  const saved = localStorage.getItem("theme");
+  const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+  const prefersDark = mediaQuery.matches;
+  const initialTheme = saved || (prefersDark ? "dark" : "light");
 
-  // Handle click
-  toggle.addEventListener("click", () => {
-    const current = document.documentElement.getAttribute("data-theme");
-    const next = current === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-    updateToggle();
+  applyTheme(initialTheme);
+
+  toggle.addEventListener("change", (event) => {
+    const theme = event.target.checked ? "light" : "dark";
+    applyTheme(theme);
+    localStorage.setItem("theme", theme);
+  });
+
+  mediaQuery.addEventListener("change", (event) => {
+    if (localStorage.getItem("theme")) return;
+    applyTheme(event.matches ? "dark" : "light");
   });
 });
 
