@@ -50,7 +50,15 @@
             </label>
             <label class="form__field">
               <span>Category*</span>
-              <input type="text" name="category" required placeholder="What do they do?" />
+              <input
+                type="text"
+                name="category"
+                list="categoryOptions"
+                required
+                placeholder="What do they do?"
+                autocomplete="off"
+              />
+              <datalist id="categoryOptions"></datalist>
             </label>
             <label class="form__field">
               <span>Location*</span>

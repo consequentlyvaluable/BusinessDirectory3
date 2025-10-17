@@ -11,6 +11,7 @@ const toggleFormButton = document.querySelector("#toggleFormButton");
 const cancelButton = document.querySelector("#cancelButton");
 const businessForm = document.querySelector("#businessForm");
 const submitButton = businessForm.querySelector('[type="submit"]');
+const categoryOptionsList = document.querySelector("#categoryOptions");
 const copyrightYearEl = document.querySelector("#copyrightYear");
 
 const setStatusMessage = (message, { variant } = {}) => {
@@ -29,6 +30,32 @@ const setStatusMessage = (message, { variant } = {}) => {
   } else {
     delete statusMessageEl.dataset.variant;
   }
+};
+
+const updateCategoryOptions = () => {
+  if (!categoryOptionsList) return;
+
+  const seen = new Set();
+  const options = [];
+
+  businesses.forEach(({ category }) => {
+    const value = category?.trim();
+    if (!value) return;
+
+    const key = value.toLowerCase();
+    if (seen.has(key)) return;
+
+    seen.add(key);
+    options.push(value);
+  });
+
+  categoryOptionsList.innerHTML = "";
+
+  options.forEach((optionValue) => {
+    const option = document.createElement("option");
+    option.value = optionValue;
+    categoryOptionsList.append(option);
+  });
 };
 
 const renderBusinesses = (items) => {
@@ -106,14 +133,17 @@ const loadBusinesses = async () => {
   businessListEl.removeAttribute("aria-busy");
 
   if (error) {
+    businesses = [];
     renderBusinesses([]);
     setStatusMessage(`Unable to load businesses: ${error.message}`, {
       variant: "error",
     });
+    updateCategoryOptions();
     return;
   }
 
   businesses = data ?? [];
+  updateCategoryOptions();
   setStatusMessage("");
 
   if (!lastQuery) {
@@ -180,6 +210,7 @@ const handleFormSubmit = async (event) => {
 
   if (data) {
     businesses = [data, ...businesses];
+    updateCategoryOptions();
     filterBusinesses(lastQuery);
   } else {
     await loadBusinesses();
@@ -196,6 +227,7 @@ const handleSearchInput = (event) => {
 
 const init = async () => {
   renderBusinesses(businesses);
+  updateCategoryOptions();
   searchInputEl.addEventListener("input", handleSearchInput);
   toggleFormButton.addEventListener("click", () => toggleFormVisibility());
   cancelButton.addEventListener("click", () => {
