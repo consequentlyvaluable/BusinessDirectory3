@@ -62,7 +62,13 @@
             </label>
             <label class="form__field">
               <span>Location*</span>
-              <input type="text" name="location" required placeholder="Where are they?" />
+              <input
+                type="text"
+                name="location"
+                required
+                placeholder="Where are they?"
+                autocomplete="off"
+              />
             </label>
             <label class="form__field form__field--full">
               <span>Description</span>
@@ -99,6 +105,11 @@
       window.supabaseConfig = {
         url: "https://bumusshqmskcglfmuctd.supabase.co",
         key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ1bXVzc2hxbXNrY2dsZm11Y3RkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA0NDY1OTksImV4cCI6MjA3NjAyMjU5OX0.daUTTJKYxKiGRBH5Go4ObbM_ensIo5O4flbPy1CZEM8",
+      };
+    </script>
+    <script>
+      window.googleMapsConfig = {
+        apiKey: "AIzaSyAoEUXjIN4zyM8C8DWAhOlUS0Te7GcVUlA",
       };
     </script>
     <script src="app.js"></script>
