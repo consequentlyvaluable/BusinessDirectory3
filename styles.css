@@ -172,14 +172,17 @@ body {
   left: 0.15rem;
   transform: translateX(0);
   transition: transform 220ms ease, background 220ms ease, box-shadow 220ms ease;
+  z-index: 0;
 }
 
 .theme-switch__icon {
+  position: relative;
   font-size: 0.95rem;
   line-height: 1;
   pointer-events: none;
   opacity: 0.6;
   transition: opacity 200ms ease;
+  z-index: 1;
 }
 
 .theme-switch input:focus-visible + .theme-switch__track {
