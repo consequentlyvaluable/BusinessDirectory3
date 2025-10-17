@@ -167,8 +167,8 @@ body {
   width: 1.55rem;
   height: 1.55rem;
   border-radius: 50%;
-  background: var(--color-card-bg);
-  box-shadow: 0 6px 15px rgba(15, 23, 42, 0.3);
+  background: var(--color-primary);
+  box-shadow: 0 6px 15px rgba(16, 185, 129, 0.35);
   left: 0.15rem;
   transform: translateX(0);
   transition: transform 220ms ease, background 220ms ease, box-shadow 220ms ease;
@@ -192,8 +192,8 @@ body {
 
 .theme-switch input:checked + .theme-switch__track .theme-switch__thumb {
   transform: translateX(1.6rem);
-  background: var(--color-text);
-  box-shadow: 0 8px 16px rgba(15, 23, 42, 0.2);
+  background: var(--color-primary);
+  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.35);
 }
 
 .theme-switch input:checked + .theme-switch__track .theme-switch__icon--sun {
@@ -460,6 +460,10 @@ textarea:focus {
   margin: 0;
   color: rgba(226, 232, 240, 0.85);
   line-height: 1.5;
+}
+
+:root[data-theme="light"] .business__description {
+  color: #1e3a8a;
 }
 
 /* ==============================
