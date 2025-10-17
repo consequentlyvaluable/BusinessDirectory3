@@ -462,6 +462,10 @@ textarea:focus {
   line-height: 1.5;
 }
 
+:root[data-theme="light"] .business__description {
+  color: #1e3a8a;
+}
+
 /* ==============================
    STATUS & FOOTER
 ============================== */
