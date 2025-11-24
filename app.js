@@ -8,6 +8,7 @@ const statusMessageEl = document.querySelector("#statusMessage");
 const searchInputEl = document.querySelector("#searchInput");
 const formSectionEl = document.querySelector("#formSection");
 const popoverEl = document.querySelector("#businessPopover");
+const popoverBackdrop = document.querySelector("#popoverBackdrop");
 const popoverContentEl = popoverEl?.querySelector(".popover__content");
 const popoverCloseButton = popoverEl?.querySelector(".popover__close");
 const toggleFormButton = document.querySelector("#toggleFormButton");
@@ -156,6 +157,11 @@ const hideBusinessPopover = () => {
   popoverEl.style.top = "";
   popoverEl.style.removeProperty("--arrow-offset");
   currentPopoverAnchor = null;
+
+  if (popoverBackdrop) {
+    popoverBackdrop.hidden = true;
+    popoverBackdrop.classList.remove("is-active");
+  }
 };
 
 const positionBusinessPopover = () => {
@@ -164,9 +170,13 @@ const positionBusinessPopover = () => {
   const anchorRect = currentPopoverAnchor.getBoundingClientRect();
   const popoverRect = popoverEl.getBoundingClientRect();
   const viewportWidth = document.documentElement.clientWidth;
+  const viewportHeight = document.documentElement.clientHeight;
 
   const offset = 12;
-  const top = window.scrollY + anchorRect.bottom + offset;
+  const preferredTop = window.scrollY + anchorRect.bottom + offset;
+  const minTop = window.scrollY + offset;
+  const maxTop = window.scrollY + viewportHeight - popoverRect.height - offset;
+  const top = Math.min(Math.max(preferredTop, minTop), Math.max(minTop, maxTop));
   const preferredLeft = window.scrollX + anchorRect.left + anchorRect.width / 2 - popoverRect.width / 2;
   const minLeft = window.scrollX + 12;
   const maxLeft = window.scrollX + viewportWidth - popoverRect.width - 12;
@@ -197,6 +207,11 @@ const showBusinessPopover = (business, anchorEl) => {
   popoverEl.classList.add("is-visible");
   popoverEl.style.visibility = "hidden";
 
+  if (popoverBackdrop) {
+    popoverBackdrop.hidden = false;
+    requestAnimationFrame(() => popoverBackdrop.classList.add("is-active"));
+  }
+
   requestAnimationFrame(() => {
     positionBusinessPopover();
     popoverEl.style.visibility = "visible";
@@ -209,6 +224,8 @@ document.addEventListener("click", (event) => {
   if (currentPopoverAnchor?.contains(event.target)) return;
   hideBusinessPopover();
 });
+
+popoverBackdrop?.addEventListener("click", hideBusinessPopover);
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {

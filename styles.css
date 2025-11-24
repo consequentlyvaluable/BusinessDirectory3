@@ -475,17 +475,20 @@ textarea:focus {
 .popover {
   position: absolute;
   inset: auto;
-  max-width: min(480px, 90vw);
+  width: min(520px, 94vw);
+  max-width: min(520px, 94vw);
+  max-height: min(80vh, 540px);
   background: var(--color-card-bg);
   color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: 1rem;
   box-shadow: var(--shadow-lg);
-  padding: 1.25rem 1.25rem 1.5rem;
+  padding: clamp(1rem, 2vw, 1.35rem);
   z-index: 20;
   transition: opacity 150ms ease, transform 150ms ease;
   opacity: 0;
   transform: translateY(-4px);
+  overflow: visible;
 }
 
 .popover.is-visible {
@@ -541,6 +544,15 @@ textarea:focus {
   margin-bottom: 0.75rem;
 }
 
+.popover__content {
+  display: grid;
+  gap: 0.85rem;
+  max-height: calc(min(80vh, 540px) - 2 * clamp(1rem, 2vw, 1.35rem));
+  overflow-y: auto;
+  padding-right: 0.25rem;
+  scrollbar-gutter: stable;
+}
+
 .popover__description {
   margin: 0;
   line-height: 1.6;
@@ -549,6 +561,23 @@ textarea:focus {
 
 :root[data-theme="light"] .popover__description {
   color: #0f172a;
+}
+
+.popover__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+  z-index: 15;
+}
+
+.popover__backdrop.is-active {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* ==============================
