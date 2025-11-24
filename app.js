@@ -7,6 +7,9 @@ const emptyStateEl = document.querySelector("#emptyState");
 const statusMessageEl = document.querySelector("#statusMessage");
 const searchInputEl = document.querySelector("#searchInput");
 const formSectionEl = document.querySelector("#formSection");
+const popoverEl = document.querySelector("#businessPopover");
+const popoverContentEl = popoverEl?.querySelector(".popover__content");
+const popoverCloseButton = popoverEl?.querySelector(".popover__close");
 const toggleFormButton = document.querySelector("#toggleFormButton");
 const cancelButton = document.querySelector("#cancelButton");
 const businessForm = document.querySelector("#businessForm");
@@ -18,6 +21,7 @@ const nameInput = businessForm?.querySelector('input[name="name"]');
 
 let googleMapsLoadedPromise;
 let locationAutocomplete;
+let currentPopoverAnchor = null;
 
 const loadGoogleMapsPlaces = () => {
   if (typeof window === "undefined") return Promise.resolve(null);
@@ -144,7 +148,86 @@ const updateCategoryOptions = () => {
   });
 };
 
+const hideBusinessPopover = () => {
+  if (!popoverEl) return;
+  popoverEl.hidden = true;
+  popoverEl.classList.remove("is-visible");
+  popoverEl.style.left = "";
+  popoverEl.style.top = "";
+  popoverEl.style.removeProperty("--arrow-offset");
+  currentPopoverAnchor = null;
+};
+
+const positionBusinessPopover = () => {
+  if (!popoverEl || !currentPopoverAnchor || popoverEl.hidden) return;
+
+  const anchorRect = currentPopoverAnchor.getBoundingClientRect();
+  const popoverRect = popoverEl.getBoundingClientRect();
+  const viewportWidth = document.documentElement.clientWidth;
+
+  const offset = 12;
+  const top = window.scrollY + anchorRect.bottom + offset;
+  const preferredLeft = window.scrollX + anchorRect.left + anchorRect.width / 2 - popoverRect.width / 2;
+  const minLeft = window.scrollX + 12;
+  const maxLeft = window.scrollX + viewportWidth - popoverRect.width - 12;
+  const left = Math.min(Math.max(preferredLeft, minLeft), Math.max(minLeft, maxLeft));
+
+  popoverEl.style.top = `${top}px`;
+  popoverEl.style.left = `${left}px`;
+
+  const arrowOffset = anchorRect.left + anchorRect.width / 2 - left;
+  popoverEl.style.setProperty("--arrow-offset", `${arrowOffset}px`);
+};
+
+const showBusinessPopover = (business, anchorEl) => {
+  if (!popoverEl || !popoverContentEl) return;
+
+  currentPopoverAnchor = anchorEl;
+
+  popoverContentEl.innerHTML = `
+    <h3 class="popover__title">${business.name}</h3>
+    <div class="popover__meta">
+      <span class="badge">${business.category}</span>
+      <span class="badge">${business.location}</span>
+    </div>
+    <p class="popover__description">${business.description || "No description provided."}</p>
+  `;
+
+  popoverEl.hidden = false;
+  popoverEl.classList.add("is-visible");
+  popoverEl.style.visibility = "hidden";
+
+  requestAnimationFrame(() => {
+    positionBusinessPopover();
+    popoverEl.style.visibility = "visible";
+  });
+};
+
+document.addEventListener("click", (event) => {
+  if (!popoverEl || popoverEl.hidden) return;
+  if (popoverEl.contains(event.target)) return;
+  if (currentPopoverAnchor?.contains(event.target)) return;
+  hideBusinessPopover();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    hideBusinessPopover();
+  }
+});
+
+window.addEventListener("scroll", () => {
+  if (!popoverEl || popoverEl.hidden) return;
+  positionBusinessPopover();
+});
+
+window.addEventListener("resize", () => {
+  if (!popoverEl || popoverEl.hidden) return;
+  positionBusinessPopover();
+});
+
 const renderBusinesses = (items) => {
+  hideBusinessPopover();
   businessListEl.innerHTML = "";
 
   if (items.length === 0) {
@@ -183,6 +266,17 @@ const renderBusinesses = (items) => {
 
     meta.append(categoryBadge, locationBadge);
     card.append(title, meta, description);
+
+    const openPopover = () => showBusinessPopover(business, card);
+    card.tabIndex = 0;
+    card.addEventListener("click", openPopover);
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        openPopover();
+      }
+    });
+
     fragment.append(card);
   });
 
@@ -315,6 +409,7 @@ const init = async () => {
   renderBusinesses(businesses);
   updateCategoryOptions();
   searchInputEl.addEventListener("input", handleSearchInput);
+  popoverCloseButton?.addEventListener("click", hideBusinessPopover);
   toggleFormButton.addEventListener("click", () => toggleFormVisibility());
   cancelButton.addEventListener("click", () => {
     toggleFormVisibility(false);
